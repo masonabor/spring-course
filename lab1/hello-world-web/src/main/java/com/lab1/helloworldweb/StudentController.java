@@ -35,7 +35,7 @@ public class StudentController {
         var text = new StringBuilder();
         try (var br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass()
                         .getClassLoader()
-                        .getResourceAsStream(fileName)))) ) {
+                        .getResourceAsStream(fileName))))) {
             String line = br.readLine();
             do {
                 text.append(line);
