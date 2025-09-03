@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f9;
+            background-color: cadetblue;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -17,37 +17,51 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #333;
+            color: #1e1e1e;
+            font-weight: bolder;
+            font-size: 8vh;
         }
 
-        button {
-            background: #4a90e2;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            margin: 8px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: #357ab7;
-        }
-
-        button:active {
-            background: #2d5f8a;
-        }
+    img{
+        width: 9vw;
+        height: 12vw;
+    }
+    .images{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 4vw;
+    }
+    .names{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10vw;
+    }
+    p{
+        margin-top: 0;
+    }
+    h2, h1{
+        color: #ffffff;
+        font-family: "Berlin Sans FB", sans-serif;
+        font-weight: bolder;
+    }
 
     </style>
 </head>
 <body>
 <h1>Виберіть студента</h1>
+<p>Ми студенти групи ІА-34, ІА-33 та ІА-31</p>
+<div class="names">
+    <h2>Таня</h2>
+    <h2>Юрокі</h2>
+    <h2>Ендрю</h2>
+</div>
 
-<button onclick="location.href='/view/andriy'">Ендрю</button>
-<button onclick="location.href='/view/tania'">Таня</button>
-<button onclick="location.href='/view/yurii'">Юрокі</button>
-
+<div class="images">
+    <img src="/img/tania.jpg" onclick="location.href='/view/tania'">
+   <img src="/img/yurii.jpg" onclick="location.href='/view/yurii'">
+    <img src="/img/andrii.jpg" onclick="location.href='/view/andriy'">
+    </div>
 </body>
 </html>

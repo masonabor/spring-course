@@ -3,11 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Вивід студента</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, cadetblue, #4ca1af);
+            font-family: "Berlin Sans FB", sans-serif;
+        }
+
+        h1 {
+            color: #252525;
+            font-size: 4vh;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px 40px;
+            text-align: center;
+            min-width: 300px;
+            height: 400px;
+        }
+
+        span {
+            color: #333;
+            font-size: 3vh;
+        }
+    </style>
 </head>
 <body>
 <h1>Інформація про студента</h1>
 
-<p><span th:text="${student}">Студент</span></p>
+<div class="card">
+    <p><span th:text="${student}">Студент</span></p>
+</div>
 
 </body>
 </html>
+
