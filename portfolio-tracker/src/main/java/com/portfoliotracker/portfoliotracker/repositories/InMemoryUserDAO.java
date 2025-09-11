@@ -1,19 +1,25 @@
 package com.portfoliotracker.portfoliotracker.repositories;
 
 import com.portfoliotracker.portfoliotracker.models.User;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
+@AllArgsConstructor
 public class InMemoryUserDAO {
     private final Map<UUID, User> users = new HashMap<>();
+    private final PasswordEncoder passwordEncoder;
 
     public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
     }
 
     public void addUser(User user) {
+        var password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
         users.put(user.getId(), user);
     }
 
@@ -24,7 +30,23 @@ public class InMemoryUserDAO {
                 .orElse(null);
     }
 
-    public User findById(Long id) {
+    public User findById(UUID id) {
         return users.get(id);
+    }
+
+    public boolean existsById(UUID id) {
+        return users.containsKey(id);
+    }
+
+    public boolean existsByUsername(String username) {
+        return users.values()
+                .stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    public boolean existsByEmail(String email) {
+        return users.values()
+                .stream()
+                .anyMatch(user -> user.getEmail().equals(email));
     }
 }
