@@ -11,7 +11,6 @@ import java.util.*;
 @AllArgsConstructor
 public class InMemoryUserDAO {
     private final Map<UUID, User> users = new HashMap<>();
-    private final PasswordEncoder passwordEncoder;
 
     public List<User> findAllUsers() {
         return new ArrayList<>(users.values());
@@ -19,7 +18,7 @@ public class InMemoryUserDAO {
 
     public void addUser(User user) {
         var password = user.getPassword();
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(password);
         users.put(user.getId(), user);
     }
 

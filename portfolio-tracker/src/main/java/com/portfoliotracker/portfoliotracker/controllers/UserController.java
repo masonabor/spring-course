@@ -8,8 +8,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-    @GetMapping("/")
-    public String test() {
-        return "null";
-    }
 }

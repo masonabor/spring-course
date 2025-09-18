@@ -3,6 +3,7 @@ package com.portfoliotracker.portfoliotracker.services;
 import com.portfoliotracker.portfoliotracker.DTO.UserRegistrationDTO;
 import com.portfoliotracker.portfoliotracker.exceptions.UserAlreadyExistsException;
 import com.portfoliotracker.portfoliotracker.models.User;
+import com.portfoliotracker.portfoliotracker.models.VerificationToken;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,9 @@ public interface UserServiceInterface {
     boolean existsByEmail(String email);
     boolean existsByUsername(String username);
     boolean existsUser(UserRegistrationDTO userDTO) throws UserAlreadyExistsException;
+    void saveRegisteredUser(User user);
+    void createVerificationToken(User user, String token);
+    VerificationToken getVerificationToken(String token);
 //    void activateUser(Long userId);
 //    void deactivateUser(Long userId);
 //    void setUserEnabled(Long userId, boolean enabled);

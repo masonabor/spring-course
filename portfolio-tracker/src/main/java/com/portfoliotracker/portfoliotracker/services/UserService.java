@@ -4,17 +4,19 @@ import com.portfoliotracker.portfoliotracker.DTO.UserRegistrationDTO;
 import com.portfoliotracker.portfoliotracker.exceptions.UserAlreadyExistsException;
 import com.portfoliotracker.portfoliotracker.exceptions.UserRegistrationException;
 import com.portfoliotracker.portfoliotracker.models.User;
+import com.portfoliotracker.portfoliotracker.models.VerificationToken;
+import com.portfoliotracker.portfoliotracker.repositories.InMemoryTokenRepository;
 import com.portfoliotracker.portfoliotracker.repositories.InMemoryUserDAO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class UserService implements UserServiceInterface {
 
     private InMemoryUserDAO inMemoryUserDAO;
+    private InMemoryTokenRepository inMemoryTokenDAO;
 
     @Override
     public boolean existsByEmail(String email) {
@@ -37,6 +39,23 @@ public class UserService implements UserServiceInterface {
         } else if (existsByUsername && existsByEmail) {
             throw new UserAlreadyExistsException("Акаунти з таким юзернеймом та поштою уже існують");
         } else return false;
+    }
+
+    @Override
+    public void saveRegisteredUser(User user) {
+
+    }
+
+    @Override
+    public void createVerificationToken(User user, String token) {
+        VerificationToken myToken = new VerificationToken(token, user);
+        inMemoryTokenDAO.save(myToken);
+
+    }
+
+    @Override
+    public VerificationToken getVerificationToken(String token) {
+        return null;
     }
 
     @Override

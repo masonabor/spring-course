@@ -17,16 +17,27 @@ public class MyUserDetailsService implements UserDetailsService {
     private InMemoryUserDAO inMemoryUserDAO;
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = inMemoryUserDAO.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("Немає користувача з таким юзернеймом: " + email);
-        }
 
-        boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, user.getAuthorities());
+        try {
+            User user = inMemoryUserDAO.findByEmail(email);
+            if (user == null) {
+                throw new UsernameNotFoundException("Немає користувача з таким юзернеймом: " + email);
+            }
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(),
+                    user.getPassword().toLowerCase(),
+                    user.isEnabled(),
+                    accountNonExpired,
+                    credentialsNonExpired,
+                    accountNonLocked,
+                    user.getAuthorities()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
