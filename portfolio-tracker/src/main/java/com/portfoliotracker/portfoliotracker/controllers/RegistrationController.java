@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -28,7 +30,7 @@ public class RegistrationController {
 
     private final UserServiceInterface userService;
     private final ApplicationEventPublisher eventPublisher;
-    private MessageSource messages;
+    private MessageSource messages; // відповідає за локалізовані повідомлення
 
     @GetMapping("/")
     public String showRegistrationForm(Model model) {
@@ -51,8 +53,12 @@ public class RegistrationController {
         User registered;
 
         try {
+            RequestMapping mapping = RegistrationController.class.getAnnotation(RequestMapping.class);
             registered = userService.registerNewUserAccount(userDTO);
-            String appUrl = request.getContextPath();
+            String appUrl = ServletUriComponentsBuilder.fromCurrentRequest()
+                                                    .replacePath(mapping.value()[0])
+                                                    .build()
+                                                    .toString();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
         } catch (UserRegistrationException e) {
             mav.addObject("globalError", e.getMessage());
@@ -66,26 +72,30 @@ public class RegistrationController {
     }
 
     @GetMapping("/registrationConfirm")
-    public String confirmRegistration(Model model, HttpServletRequest request, @RequestParam("token") String token) {
+    public String confirmRegistration(Model model,
+                                      HttpServletRequest request,
+                                      @RequestParam("token") String token,
+                                      RedirectAttributes redirectAttributes) {
         Locale locale = request.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/badUser?lang=" + locale.getLanguage();
         }
 
         User user = verificationToken.getUser();
         Calendar cal = Calendar.getInstance();
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String messageValue = messages.getMessage("auth.message.expired", null, locale);
-            model.addAttribute("message", messageValue);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            redirectAttributes.addFlashAttribute("message", messageValue);
+            return "redirect:/badUser?lang=" + locale.getLanguage();
         }
 
         user.setActivated(true);
         userService.saveRegisteredUser(user);
-        return "redirect:/login.html?lang=" + locale.getLanguage();
+        return "redirect:/login?lang=" + locale.getLanguage();
     }
 }

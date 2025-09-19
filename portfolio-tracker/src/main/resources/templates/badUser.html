@@ -1,8 +1,16 @@
+<!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org">
-<html>
+<head>
+    <meta charset="UTF-8">
+</head>
 <body>
-    <h1 th:text="${param.message[0]}>Error Message</h1>
-    <a th:href="@{/registration.html}"
-    th:text="#{label.form.loginSignUp}">signup</a>
+<!-- Flash-повідомлення -->
+<h1 th:text="${message}">Error Message</h1>
+
+<!-- Посилання з урахуванням локалі -->
+<a th:href="@{/registration(lang=${#locale.language})}"
+   th:text="#{label.form.loginSignUp}">
+    signup
+</a>
 </body>
 </html>

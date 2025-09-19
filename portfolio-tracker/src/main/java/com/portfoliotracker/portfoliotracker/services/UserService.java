@@ -50,12 +50,11 @@ public class UserService implements UserServiceInterface {
     public void createVerificationToken(User user, String token) {
         VerificationToken myToken = new VerificationToken(token, user);
         inMemoryTokenDAO.save(myToken);
-
     }
 
     @Override
     public VerificationToken getVerificationToken(String token) {
-        return null;
+        return inMemoryTokenDAO.getVerificationToken(token);
     }
 
     @Override

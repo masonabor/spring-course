@@ -9,9 +9,14 @@ import java.util.Map;
 
 @Repository
 public class InMemoryTokenRepository {
-    private final Map<User, VerificationToken> tokens = new HashMap<>();
+    private final Map<String, VerificationToken> tokens = new HashMap<>();
 
     public void save(VerificationToken token) {
-        this.tokens.put(token.getUser(), token);
+        this.tokens.put(token.getToken(), token);
+    }
+
+    public VerificationToken getVerificationToken(String token) {
+        return this.tokens.get(token);
+
     }
 }
