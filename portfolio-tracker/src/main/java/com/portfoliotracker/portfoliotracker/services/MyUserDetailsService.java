@@ -1,5 +1,6 @@
 package com.portfoliotracker.portfoliotracker.services;
 
+import com.portfoliotracker.portfoliotracker.exceptions.UserIsNotActivatedException;
 import com.portfoliotracker.portfoliotracker.models.User;
 import com.portfoliotracker.portfoliotracker.repositories.InMemoryUserDAO;
 import jakarta.transaction.Transactional;
@@ -16,20 +17,22 @@ public class MyUserDetailsService implements UserDetailsService {
 
     private InMemoryUserDAO inMemoryUserDAO;
 
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
         try {
-            User user = inMemoryUserDAO.findByEmail(email);
+            User user = inMemoryUserDAO.findByUsername(username);
             if (user == null) {
-                throw new UsernameNotFoundException("Немає користувача з таким юзернеймом: " + email);
+                throw new UsernameNotFoundException("Немає користувача з таким юзернеймом: " + username);
+            } else if (!user.isActivated()) {
+                throw new UserIsNotActivatedException("Користувач не активований: " + username);
             }
             return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(),
-                    user.getPassword().toLowerCase(),
+                    user.getUsername(),
+                    user.getPassword(),
                     user.isEnabled(),
                     accountNonExpired,
                     credentialsNonExpired,

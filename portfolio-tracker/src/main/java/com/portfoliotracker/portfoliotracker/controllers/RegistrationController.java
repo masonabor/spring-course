@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -24,15 +25,16 @@ import java.util.Locale;
 
 
 @Controller
-@AllArgsConstructor
 @RequestMapping("/registration")
+@AllArgsConstructor
 public class RegistrationController {
 
     private final UserServiceInterface userService;
+    private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
-    private MessageSource messages; // відповідає за локалізовані повідомлення
+    private final MessageSource messages; // відповідає за локалізовані повідомлення
 
-    @GetMapping("/")
+    @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
         model.addAttribute("user", userRegistrationDTO);
@@ -55,6 +57,7 @@ public class RegistrationController {
         try {
             RequestMapping mapping = RegistrationController.class.getAnnotation(RequestMapping.class);
             registered = userService.registerNewUserAccount(userDTO);
+            registered.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             String appUrl = ServletUriComponentsBuilder.fromCurrentRequest()
                                                     .replacePath(mapping.value()[0])
                                                     .build()
@@ -76,6 +79,7 @@ public class RegistrationController {
                                       HttpServletRequest request,
                                       @RequestParam("token") String token,
                                       RedirectAttributes redirectAttributes) {
+
         Locale locale = request.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);

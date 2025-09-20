@@ -1,7 +1,10 @@
 package com.portfoliotracker.portfoliotracker.configurations;
 
+import com.portfoliotracker.portfoliotracker.exceptions.UserIsNotActivatedException;
 import com.portfoliotracker.portfoliotracker.services.MyUserDetailsService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,19 +20,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class WebSecurityConfig {
 
     private final MyUserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+        http
                 .authorizeHttpRequests((requests) -> requests
-                        .anyRequest().permitAll()
+                        .requestMatchers("/login", "/registration/register", "/registration/registrationConfirm", "/home").permitAll()
+                        .anyRequest().authenticated()
                 )
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .usernameParameter("username")
+                        .defaultSuccessUrl("/home", true)
+//                        .failureHandler((request, response, exception) -> {
+//                            String errorMessage;
+//                            if (exception instanceof UserIsNotActivatedException) {
+//                                errorMessage = messageSource.getMessage("")
+//                            }
+
+//                        })
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout"))
                 .httpBasic(AbstractHttpConfigurer::disable);
         return http.build();
     }

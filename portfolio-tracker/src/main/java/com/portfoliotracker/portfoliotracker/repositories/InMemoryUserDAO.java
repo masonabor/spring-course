@@ -48,4 +48,11 @@ public class InMemoryUserDAO {
                 .stream()
                 .anyMatch(user -> user.getEmail().equals(email));
     }
+
+    public User findByUsername(String username) {
+        return users.values()
+                .stream()
+                .filter(user -> user.getUsername().equals(username))
+                .findFirst().orElse(null);
+    }
 }
