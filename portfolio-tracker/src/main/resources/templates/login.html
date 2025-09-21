@@ -3,8 +3,8 @@
 <h1>Login Form</h1>
 
 <!-- Глобальні помилки -->
-<div th:if="${globalError}" style="color:red; font-weight:bold;">
-    <p th:text="${globalError}"></p>
+<div th:if="${loginError}" style="color:red; font-weight:bold;">
+    <p th:text="${loginError}"></p>
 </div>
 
 <form th:action="@{/login}" th:object="${loginRequest}" method="post">

@@ -1,12 +1,11 @@
 package com.portfoliotracker.portfoliotracker.configurations;
 
-import com.portfoliotracker.portfoliotracker.exceptions.UserIsNotActivatedException;
 import com.portfoliotracker.portfoliotracker.services.MyUserDetailsService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,6 +15,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import java.util.Locale;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final MyUserDetailsService userDetailsService;
+    private final MessageSource messageSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -36,13 +39,9 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("username")
                         .defaultSuccessUrl("/home", true)
-//                        .failureHandler((request, response, exception) -> {
-//                            String errorMessage;
-//                            if (exception instanceof UserIsNotActivatedException) {
-//                                errorMessage = messageSource.getMessage("")
-//                            }
-
-//                        })
+                        .loginProcessingUrl("/login")
+                        .failureHandler(authenticationFailureHandler())
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout"))
@@ -61,5 +60,16 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            Locale locale = LocaleContextHolder.getLocale();
+            String errorMessage = messageSource.getMessage(exception.getMessage(), null, locale);
+
+            request.getSession().setAttribute("errorMessage", errorMessage);
+            response.sendRedirect("/login?error");
+        };
     }
 }

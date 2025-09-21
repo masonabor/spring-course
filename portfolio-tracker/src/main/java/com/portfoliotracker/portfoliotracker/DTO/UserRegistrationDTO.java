@@ -9,18 +9,20 @@ import lombok.Data;
 @Data
 @ValidPassword
 public class UserRegistrationDTO {
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "{register.usernameNotNull}")
+    @NotEmpty(message = "{register.usernameNotEmpty}")
     private String username;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "{register.passwordNotNull}")
+    @NotEmpty(message = "{register.passwordNotEmpty}")
     private String password;
 
+    @NotNull(message = "{register.matchingPasswordNotNull}")
+    @NotEmpty(message = "{register.matchingPasswordNotEmpty}")
     private String matchingPassword;
 
-    @ValidEmail
-    @NotNull
-    @NotEmpty
+    @ValidEmail(message = "{register.emailNotValid}")
+    @NotNull(message = "{register.emailNotNull}")
+    @NotEmpty(message = "{register.emailNotEmpty}")
     private String email;
 }

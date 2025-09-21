@@ -18,9 +18,4 @@ public class HomeController {
     public String showHomePage(HttpServletRequest request) {
         return "home";
     }
-
-    @GetMapping("/test")
-    public String showTestPage() {
-        return "error";
-    }
 }

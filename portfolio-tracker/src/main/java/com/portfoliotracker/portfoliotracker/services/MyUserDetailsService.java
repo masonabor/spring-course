@@ -1,10 +1,10 @@
 package com.portfoliotracker.portfoliotracker.services;
 
-import com.portfoliotracker.portfoliotracker.exceptions.UserIsNotActivatedException;
 import com.portfoliotracker.portfoliotracker.models.User;
 import com.portfoliotracker.portfoliotracker.repositories.InMemoryUserDAO;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
             if (user == null) {
                 throw new UsernameNotFoundException("Немає користувача з таким юзернеймом: " + username);
             } else if (!user.isActivated()) {
-                throw new UserIsNotActivatedException("Користувач не активований: " + username);
+                throw new DisabledException("Користувач не активований: " + username);
             }
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),

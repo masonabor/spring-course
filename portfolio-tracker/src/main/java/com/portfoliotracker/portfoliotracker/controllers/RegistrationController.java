@@ -44,8 +44,8 @@ public class RegistrationController {
     @PostMapping("/register")
     public ModelAndView registerUserAccount(@ModelAttribute("user")
                                             @Valid UserRegistrationDTO userDTO,
-                                            HttpServletRequest request,
-                                            Errors errors) {
+                                            Errors errors, // має бути одразу після валідованого об'єкта
+                                            HttpServletRequest request) {
         var mav = new ModelAndView("registration");
 
         if (errors.hasErrors()) {
