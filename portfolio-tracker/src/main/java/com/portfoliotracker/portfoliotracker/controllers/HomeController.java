@@ -1,15 +1,14 @@
 package com.portfoliotracker.portfoliotracker.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.LocaleResolver;
 
-import java.util.Locale;
 
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class HomeController {
 
     private final LocaleResolver localeResolver;

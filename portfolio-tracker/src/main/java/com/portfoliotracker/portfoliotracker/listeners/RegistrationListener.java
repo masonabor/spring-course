@@ -16,9 +16,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
-    private UserService userService;
-    private MessageSource messages;
-    private JavaMailSender mailSender;
+    private final UserService userService;
+    private final MessageSource messages;
+    private final JavaMailSender mailSender;
 
     @Override
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
-@AllArgsConstructor
 public class AuthController {
 
     private static final String LOGIN_ERROR_SESSION_ATTR = "LOGIN_ERROR";

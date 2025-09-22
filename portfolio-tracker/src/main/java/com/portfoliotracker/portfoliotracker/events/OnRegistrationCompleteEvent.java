@@ -9,6 +9,7 @@ import java.util.Locale;
 @Getter
 @Setter
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
+
     private String appUrl;
     private Locale locale;
     private User user;

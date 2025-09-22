@@ -4,6 +4,7 @@ import com.portfoliotracker.portfoliotracker.models.User;
 import com.portfoliotracker.portfoliotracker.repositories.implementations.InMemoryUserDAO;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,10 +13,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
 
-    private InMemoryUserDAO inMemoryUserDAO;
+    private final InMemoryUserDAO inMemoryUserDAO;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

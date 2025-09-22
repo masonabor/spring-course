@@ -8,11 +8,10 @@ import com.portfoliotracker.portfoliotracker.models.VerificationToken;
 import com.portfoliotracker.portfoliotracker.services.UserServiceInterface;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,11 +26,10 @@ import java.util.Locale;
 
 @Controller
 @RequestMapping("/registration")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RegistrationController {
 
     private final UserServiceInterface userService;
-    private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
     private final MessageSource messages; // відповідає за локалізовані повідомлення
 
@@ -58,7 +56,6 @@ public class RegistrationController {
         try {
             RequestMapping mapping = RegistrationController.class.getAnnotation(RequestMapping.class);
             registered = userService.registerNewUserAccount(userDTO);
-            registered.setPassword(passwordEncoder.encode(userDTO.getPassword()));
             String appUrl = ServletUriComponentsBuilder.fromCurrentRequest()
                                                     .replacePath(mapping.value()[0])
                                                     .build()
