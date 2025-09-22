@@ -1,7 +1,7 @@
 package com.portfoliotracker.portfoliotracker.DTO;
 
-import com.portfoliotracker.portfoliotracker.annotations.ValidEmail;
-import com.portfoliotracker.portfoliotracker.annotations.ValidPassword;
+import com.portfoliotracker.portfoliotracker.validators.ValidEmail;
+import com.portfoliotracker.portfoliotracker.validators.ValidPassword;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

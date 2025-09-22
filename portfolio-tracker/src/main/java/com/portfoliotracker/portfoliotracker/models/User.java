@@ -1,14 +1,8 @@
 package com.portfoliotracker.portfoliotracker.models;
 
 import com.portfoliotracker.portfoliotracker.DTO.UserRegistrationDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,46 +12,57 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
     private String email;
-    private String firstName;
-    private String lastName;
-    private String phoneNumber;
 
-    private Set<Role> roles = new HashSet<>();
-    private boolean activated;
+    @Builder.Default
+    private String firstName = null;
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = null;
-        this.lastName = null;
-        this.phoneNumber = null;
-        this.roles.add(Role.ROLE_USER);
-        this.activated = false;
+    @Builder.Default
+    private String lastName = null;
+
+    @Builder.Default
+    private String phoneNumber = null;
+
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>(Set.of(Role.ROLE_USER));
+
+    @Builder.Default
+    private boolean enabled = false;
+
+    public static User of(String username, String password, String email) {
+        return User.builder()
+                .username(username)
+                .email(email)
+                .password(password)
+                .build();
     }
 
-    public User(UserRegistrationDTO userDTO) {
-        this.username = userDTO.getUsername();
-        this.password = userDTO.getPassword();
-        this.email = userDTO.getEmail();
-        this.firstName = null;
-        this.lastName = null;
-        this.phoneNumber = null;
-        this.roles.add(Role.ROLE_USER);
-        this.activated = false;
+    public static User of(UserRegistrationDTO userDTO) {
+        return User.builder()
+                .username(userDTO.getUsername())
+                .password(userDTO.getPassword())
+                .email(userDTO.getEmail())
+                .build();
     }
 
     @Override
@@ -67,12 +72,17 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return this.username;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     public enum Role implements GrantedAuthority {
@@ -81,7 +91,7 @@ public class User implements UserDetails {
 
         @Override
         public String getAuthority() {
-            return name();
+            return this.name();
         }
     }
 }

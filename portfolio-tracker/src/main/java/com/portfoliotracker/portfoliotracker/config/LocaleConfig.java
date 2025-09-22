@@ -1,4 +1,4 @@
-package com.portfoliotracker.portfoliotracker.configurations;
+package com.portfoliotracker.portfoliotracker.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +16,7 @@ public class LocaleConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        Locale uaLocale = Locale.of("ua");
-        slr.setDefaultLocale(uaLocale);
+        slr.setDefaultLocale(Locale.of("uk"));
         return slr;
     }
 

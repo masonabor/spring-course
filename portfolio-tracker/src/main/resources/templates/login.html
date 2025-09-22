@@ -1,24 +1,31 @@
-<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="#{login.title}">Login</title>
+</head>
 <body>
-<h1>Login Form</h1>
+<h1 th:text="#{login.header}">Login</h1>
 
-<!-- Глобальні помилки -->
+<!-- Глобальна помилка логіну (локалізований текст з failure handler) -->
 <div th:if="${loginError}" style="color:red; font-weight:bold;">
-    <p th:text="${loginError}"></p>
+    <p th:text="${loginError}">Invalid credentials</p>
 </div>
 
-<form th:action="@{/login}" th:object="${loginRequest}" method="post">
+<form th:action="@{/login}" method="post">
     <div>
-        <label>Username or Email</label>
-        <input th:field="*{username}"/>
-        <p th:each="error : ${#fields.errors('username')}" th:text="${error}" style="color:red;">Validation error</p>
+        <label th:text="#{login.username}">Username</label>
+        <input type="text" name="username" />
     </div>
     <div>
-        <label>Password</label>
-        <input type="password" th:field="*{password}"/>
-        <p th:each="error : ${#fields.errors('password')}" th:text="${error}" style="color:red;">Validation error</p>
+        <label th:text="#{login.password}">Password</label>
+        <input type="password" name="password" />
     </div>
-    <button type="submit">Login</button>
+    <button type="submit" th:text="#{login.submit}">Login</button>
 </form>
+
+<p>
+    <a th:href="@{/registration/register}" th:text="#{login.registerLink}">Register</a>
+</p>
 </body>
 </html>

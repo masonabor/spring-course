@@ -1,8 +1,7 @@
-package com.portfoliotracker.portfoliotracker.repositories;
+package com.portfoliotracker.portfoliotracker.repositories.implementations;
 
 import com.portfoliotracker.portfoliotracker.models.User;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

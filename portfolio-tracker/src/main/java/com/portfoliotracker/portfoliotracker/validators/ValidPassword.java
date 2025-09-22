@@ -1,6 +1,5 @@
-package com.portfoliotracker.portfoliotracker.annotations;
+package com.portfoliotracker.portfoliotracker.validators;
 
-import com.portfoliotracker.portfoliotracker.validators.EmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,12 +10,12 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 
-@Target({TYPE, FIELD, ANNOTATION_TYPE})
+@Target({ANNOTATION_TYPE, TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EmailValidator.class)
+@Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
-public @interface ValidEmail {
-    String message() default "Invalid email";
+public @interface ValidPassword {
+    String message() default "Password don`t match";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

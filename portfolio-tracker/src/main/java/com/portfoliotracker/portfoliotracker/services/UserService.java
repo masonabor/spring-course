@@ -5,27 +5,29 @@ import com.portfoliotracker.portfoliotracker.exceptions.UserAlreadyExistsExcepti
 import com.portfoliotracker.portfoliotracker.exceptions.UserRegistrationException;
 import com.portfoliotracker.portfoliotracker.models.User;
 import com.portfoliotracker.portfoliotracker.models.VerificationToken;
-import com.portfoliotracker.portfoliotracker.repositories.InMemoryTokenRepository;
-import com.portfoliotracker.portfoliotracker.repositories.InMemoryUserDAO;
-import lombok.AllArgsConstructor;
+import com.portfoliotracker.portfoliotracker.repositories.implementations.InMemoryTokenRepository;
+import com.portfoliotracker.portfoliotracker.repositories.implementations.InMemoryUserDAO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService implements UserServiceInterface {
 
-    private InMemoryUserDAO inMemoryUserDAO;
-    private InMemoryTokenRepository inMemoryTokenDAO;
+    private final InMemoryUserDAO inMemoryUserDAO;
+    private final InMemoryTokenRepository inMemoryTokenDAO;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public boolean existsByEmail(String email) {
-        return false;
+        return inMemoryUserDAO.existsByEmail(email);
     }
 
     @Override
     public boolean existsByUsername(String username) {
-        return false;
+        return inMemoryUserDAO.existsByUsername(username);
     }
 
     @Override
@@ -33,11 +35,11 @@ public class UserService implements UserServiceInterface {
         boolean existsByUsername = inMemoryUserDAO.existsByUsername(userDTO.getUsername());
         boolean existsByEmail = inMemoryUserDAO.existsByEmail(userDTO.getEmail());
         if (existsByUsername) {
-            throw new UserAlreadyExistsException("Акаунт з даним юзернеймом уже існує");
+            throw new UserAlreadyExistsException("registration.existsByUsername");
         } else if (existsByEmail) {
-            throw new UserAlreadyExistsException("Акаунт з такою електронною поштою уже існує");
+            throw new UserAlreadyExistsException("registration.existsByEmail");
         } else if (existsByUsername && existsByEmail) {
-            throw new UserAlreadyExistsException("Акаунти з таким юзернеймом та поштою уже існують");
+            throw new UserAlreadyExistsException("registration.existsByUsernameAndEmail");
         } else return false;
     }
 
@@ -48,7 +50,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public void createVerificationToken(User user, String token) {
-        VerificationToken myToken = new VerificationToken(token, user);
+        VerificationToken myToken = VerificationToken.of(token, user);
         inMemoryTokenDAO.save(myToken);
     }
 
@@ -62,7 +64,8 @@ public class UserService implements UserServiceInterface {
         try {
             boolean existsUser = existsUser(userDTO);
             if (!existsUser) {
-                var user = new User(userDTO);
+                var user = User.of(userDTO);
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
                 inMemoryUserDAO.addUser(user);
                 return user;
             }

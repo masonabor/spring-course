@@ -1,6 +1,5 @@
-package com.portfoliotracker.portfoliotracker.repositories;
+package com.portfoliotracker.portfoliotracker.repositories.implementations;
 
-import com.portfoliotracker.portfoliotracker.models.User;
 import com.portfoliotracker.portfoliotracker.models.VerificationToken;
 import org.springframework.stereotype.Repository;
 

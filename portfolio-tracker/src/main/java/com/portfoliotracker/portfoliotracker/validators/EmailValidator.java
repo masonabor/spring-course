@@ -1,6 +1,5 @@
 package com.portfoliotracker.portfoliotracker.validators;
 
-import com.portfoliotracker.portfoliotracker.annotations.ValidEmail;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

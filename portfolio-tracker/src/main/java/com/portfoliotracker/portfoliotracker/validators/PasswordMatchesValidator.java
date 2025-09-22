@@ -1,7 +1,6 @@
 package com.portfoliotracker.portfoliotracker.validators;
 
 import com.portfoliotracker.portfoliotracker.DTO.UserRegistrationDTO;
-import com.portfoliotracker.portfoliotracker.annotations.ValidPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

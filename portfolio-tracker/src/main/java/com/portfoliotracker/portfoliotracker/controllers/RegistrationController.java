@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,7 @@ public class RegistrationController {
                                             Errors errors, // має бути одразу після валідованого об'єкта
                                             HttpServletRequest request) {
         var mav = new ModelAndView("registration");
-
+        Locale locale = LocaleContextHolder.getLocale();
         if (errors.hasErrors()) {
             return mav;
         }
@@ -64,10 +65,12 @@ public class RegistrationController {
                                                     .toString();
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
         } catch (UserRegistrationException e) {
-            mav.addObject("globalError", e.getMessage());
+            String errorMessage = messages.getMessage(e.getMessage(), null, locale);
+            mav.addObject("globalError", errorMessage);
             return mav;
         } catch (RuntimeException e) {
-            mav.addObject("globalError", "An error occured while registration, please try later");
+            String errorMessage = messages.getMessage("registration.globalError", null, locale);
+            mav.addObject("globalError", errorMessage);
             return mav;
         }
 
@@ -76,18 +79,17 @@ public class RegistrationController {
 
     @GetMapping("/registrationConfirm")
     public String confirmRegistration(Model model,
-                                      HttpServletRequest request,
                                       @RequestParam("token") String token,
                                       RedirectAttributes redirectAttributes) {
 
-        Locale locale = request.getLocale();
+        Locale locale = LocaleContextHolder.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
             redirectAttributes.addFlashAttribute("message", message);
-            return "redirect:/badUser?lang=" + locale.getLanguage();
+            return "redirect:/badUser";
         }
 
         User user = verificationToken.getUser();
@@ -95,11 +97,11 @@ public class RegistrationController {
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String messageValue = messages.getMessage("auth.message.expired", null, locale);
             redirectAttributes.addFlashAttribute("message", messageValue);
-            return "redirect:/badUser?lang=" + locale.getLanguage();
+            return "redirect:/badUser";
         }
 
-        user.setActivated(true);
+        user.setEnabled(true);
         userService.saveRegisteredUser(user);
-        return "redirect:/login?lang=" + locale.getLanguage();
+        return "redirect:/login";
     }
 }
