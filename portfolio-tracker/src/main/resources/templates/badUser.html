@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- Flash-повідомлення -->
+<h1 th:text="${message}">Error Message</h1>
+
+<!-- Посилання з урахуванням локалі -->
+<a th:href="@{/registration(lang=${#locale.language})}"
+   th:text="#{label.form.loginSignUp}">
+    signup
+</a>
+</body>
+</html>
