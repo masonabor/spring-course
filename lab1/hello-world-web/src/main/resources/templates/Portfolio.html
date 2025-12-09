@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна №3 - Portfolio Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .welcome {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.unknown {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .portfolio-value {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .portfolio-value h2 {
+            margin: 0;
+            color: #28a745;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-style: italic;
+        }
+        .sector-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .sector-technology {
+            background: #cfe2ff;
+            color: #084298;
+        }
+        .sector-automotive {
+            background: #f8d7da;
+            color: #842029;
+        }
+        .sector-retail {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📊 Portfolio Tracker - Лабораторна №3</h1>
+
+    <!-- 2.1 Умовне форматування: Elvis operator -->
+    <div class="welcome">
+        <p>Вітаємо, <strong th:text="${userName ?: 'Гість'}">Користувач</strong>! 👋</p>
+    </div>
+
+    <!-- 2.1 Умовне форматування: th:if/unless -->
+    <div th:if="${portfolioValue != null and hasData}" class="portfolio-value">
+        <h2>Загальна вартість портфеля: $<span th:text="${#numbers.formatDecimal(portfolioValue, 1, 2)}">0.00</span></h2>
+    </div>
+
+    <div th:unless="${portfolioValue != null and hasData}" class="no-data">
+        <p>⚠️ Дані портфеля недоступні</p>
+    </div>
+
+    <!-- 2.2 Елемент вибору: th:switch/case -->
+    <div th:switch="${accountStatus}" class="status">
+        <p th:case="'active'" class="active">✅ Статус акаунта: АКТИВНИЙ</p>
+        <p th:case="'inactive'" class="inactive">❌ Статус акаунта: НЕАКТИВНИЙ</p>
+        <p th:case="'pending'" class="pending">⏳ Статус акаунта: ОЧІКУВАННЯ</p>
+        <p th:case="*" class="unknown">❓ Статус акаунта: НЕВІДОМИЙ</p>
+    </div>
+
+    <h2>📈 Ваші акції</h2>
+
+    <!-- 2.3 Цикл: th:each -->
+    <table th:if="${stocks != null and !stocks.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Символ</th>
+            <th>Назва компанії</th>
+            <th>Ціна</th>
+            <th>Кількість</th>
+            <th>Загальна вартість</th>
+            <th>Сектор</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stock : ${stocks}">
+            <td><strong th:text="${stock.symbol}">AAPL</strong></td>
+            <!-- 2.4 Захист від XSS: th:text автоматично екранує HTML -->
+            <td th:text="${stock.name}">Apple Inc.</td>
+            <td>$<span th:text="${#numbers.formatDecimal(stock.price, 1, 2)}">0.00</span></td>
+            <td th:text="${stock.quantity}">0</td>
+            <td><strong>$<span th:text="${#numbers.formatDecimal(stock.totalValue, 1, 2)}">0.00</span></strong></td>
+            <td>
+                        <span th:class="'sector-badge sector-' + ${stock.sector}"
+                              th:text="${stock.sector}">sector</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${stocks == null or stocks.isEmpty()}" class="no-data">
+        <p>📭 У вашому портфелі поки немає акцій</p>
+    </div>
+
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="/view/andriy" style="color: #667eea; text-decoration: none;">⬅️ Повернутися до головної</a>
+    </div>
+</div>
+</body>
+</html>
