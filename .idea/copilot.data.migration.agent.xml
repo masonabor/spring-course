@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AgentMigrationStateService">
+    <option name="pendingSessionIds">
+      <option value="d92298fa-3e11-42e5-92f4-c7c825ccc940" />
+      <option value="dae2625f-00c9-4355-99ae-032af552eca2" />
+    </option>
+    <option name="pendingTurns">
+      <map>
+        <entry key="d92298fa-3e11-42e5-92f4-c7c825ccc940">
+          <value>
+            <set>
+              <option value="e801f247-aaef-468b-b913-e7ff7def2f12" />
+              <option value="c154f5f8-6e1d-4a46-8078-9817035d86b4" />
+              <option value="78ea4e4e-ef41-4a84-bd5c-3569a0dc3ad4" />
+              <option value="0dd3985b-4340-42ed-8958-280085442557" />
+              <option value="e80b1f0d-7470-4553-8898-8402def8779e" />
+              <option value="d5ba2274-87b0-4a02-987b-f992a9124d27" />
+              <option value="2852d81f-9b3e-4dd7-9d56-d23e9332b329" />
+              <option value="fdecb120-236d-4c93-b1c4-0e2d6896afbb" />
+              <option value="d650a1a9-94df-4a18-a4d8-76432697dc38" />
+              <option value="2748185b-ed95-48c0-a67a-3c42fb46b4a4" />
+              <option value="cf5db285-c0c0-4e7d-8bb3-33eacd423381" />
+              <option value="c992ac12-ff5d-4bae-83f7-66879263995a" />
+            </set>
+          </value>
+        </entry>
+        <entry key="dae2625f-00c9-4355-99ae-032af552eca2">
+          <value>
+            <set>
+              <option value="b1f4e625-5c88-4344-a78d-dc92b0189182" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <pendingWorkingSetItems>
+      <entry key="d92298fa-3e11-42e5-92f4-c7c825ccc940">
+        <set>
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/model/Student.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/dto/StudentRequestDto.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/dto/StudentResponseDto.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/exception/StudentNotFoundException.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/exception/GlobalExceptionHandler.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/repository/StudentRepository.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/service/StudentService.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/controller/StudentRestController.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/build.gradle" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/gradle.properties" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/settings.gradle" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/controller/HelloController.java" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/api-tests.http" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/LAB2_README.md" />
+          <option value="file://$PROJECT_DIR$/lab1/hello-world-web/src/main/java/com/lab1/helloworldweb/config/OpenAPIConfig.java" />
+        </set>
+      </entry>
+    </pendingWorkingSetItems>
+  </component>
+</project>

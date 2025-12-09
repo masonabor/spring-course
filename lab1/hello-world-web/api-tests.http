@@ -1,0 +1,114 @@
+### Лабораторна робота 2 - REST API тестування
+
+### 2.1 CRUD ОПЕРАЦІЇ
+
+### CREATE - POST запит (статус 201 Created)
+POST http://localhost:5045/api/greet
+Content-Type: application/json
+
+{
+  "name": "Тарас"
+}
+
+### READ - GET всіх користувачів
+GET http://localhost:5045/api/users
+
+### READ - GET користувача за ID (статус 200 OK)
+GET http://localhost:5045/api/user/1
+
+### READ - GET неіснуючого користувача (статус 404 Not Found)
+GET http://localhost:5045/api/user/9999
+
+### UPDATE - PUT повне оновлення (статус 200 OK)
+PUT http://localhost:5045/api/user/123
+Content-Type: application/json
+
+{
+  "name": "Оновлене Ім'я",
+  "email": "new@email.com",
+  "phone": "+380123456789"
+}
+
+### DELETE - видалення користувача (статус 204 No Content)
+DELETE http://localhost:5045/api/user/123
+
+###
+
+### 2.2 ПАГІНАЦІЯ ТА ФІЛЬТРАЦІЯ
+
+### Пагінація - перша сторінка, 2 елементи
+GET http://localhost:5045/api/users?page=0&size=2
+
+### Пагінація - друга сторінка
+GET http://localhost:5045/api/users?page=1&size=2
+
+### Фільтрація за статусом
+GET http://localhost:5045/api/users?status=active
+
+### Фільтрація за ім'ям
+GET http://localhost:5045/api/users?name=alex
+
+### Комбінована фільтрація + пагінація
+GET http://localhost:5045/api/users?page=0&size=5&status=active&name=a
+
+###
+
+### 2.3 ЧАСТКОВЕ ОНОВЛЕННЯ (PATCH - RFC 7386)
+
+### PATCH - оновлення тільки email
+PATCH http://localhost:5045/api/user/123
+Content-Type: application/json
+
+{
+  "email": "newemail@example.com"
+}
+
+### PATCH - оновлення декількох полів
+PATCH http://localhost:5045/api/user/456
+Content-Type: application/json
+
+{
+  "email": "updated@example.com",
+  "phone": "+380987654321",
+  "status": "inactive"
+}
+
+###
+
+### 2.4 РІЗНІ HTTP СТАТУС КОДИ
+
+### 200 OK - успішний GET
+GET http://localhost:5045/api/user/1
+
+### 201 Created - створення нового ресурсу
+POST http://localhost:5045/api/greet
+Content-Type: application/json
+
+{
+  "name": "Новий Користувач"
+}
+
+### 204 No Content - успішне видалення
+DELETE http://localhost:5045/api/user/999
+
+### 404 Not Found - ресурс не знайдено
+GET http://localhost:5045/api/user/99999
+
+###
+
+### ДОДАТКОВІ ТЕСТИ
+
+### GET з path variable
+GET http://localhost:5045/hello/Maria
+
+### GET з path variable для user
+GET http://localhost:5045/user/Alex
+
+### GET з query параметром
+GET http://localhost:5045/api/hello?name=Іван
+
+### GET без параметрів
+GET http://localhost:5045/api/hello
+
+###
+
